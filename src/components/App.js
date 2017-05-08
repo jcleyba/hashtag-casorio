@@ -10,7 +10,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            token: null,
             tag: ""
         };
         this.fetchData = this.fetchData.bind(this);
@@ -18,19 +17,11 @@ class App extends Component {
     }
 
     componentWillMount() {
-        const hash = this.props.location.hash;
-        if (hash.length > 0) {
-            var query = hash.split("=");
-            var token = query[1];
-            this.setState({token: token});
-        }
-        else {
-            window.location.href = 'https://api.instagram.com/oauth/authorize/?client_id=0fdb55a9411944a7b1cc6c98e86537e7&redirect_uri=http://127.0.0.1:3000&response_type=token&scope=public_content';
-        }
+
     }
 
     fetchData(tag) {
-        this.props.instagramFetch(this.state.token, tag);
+        this.props.instagramFetch(tag);
     };
 
     inputChanged(event) {
@@ -44,9 +35,9 @@ class App extends Component {
     renderForm() {
         return (
             <div className="form">
-                <h1>#hashtag</h1>
+                <h1>#miEvento</h1>
                 <form onSubmit={this.saveTag.bind(this)} className="tag-form">
-                    #<input type="text" placeholder="Mi hashtag" onChange={this.inputChanged.bind(this)}
+                    #<input type="text" placeholder="Hashtag" onChange={this.inputChanged.bind(this)}
                             value={this.state.tag}/>
                     <br/>
                     <button type="submit">Guardar</button>
@@ -61,10 +52,20 @@ class App extends Component {
         )
     }
 
+    renderTitle() {
+        if (this.props.tag) {
+            return (
+                <h1>Usá el hashtag <span className="green">#{this.props.tag}</span>
+                </h1>
+            )
+        }
+        return ('');
+    }
+
     render() {
         return (
             <div className="App">
-                <h1>{this.props.tag ? '#' + this.props.tag : ''}</h1>
+                {this.renderTitle()}
                 {!this.props.tag && this.props.tag === '' ?
                     this.renderForm() :
                     this.renderSlideshow()

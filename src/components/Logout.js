@@ -6,8 +6,6 @@ import SpinnerComponent from './Spinner'
 class LogoutComponent extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
-
     }
 
     componentWillMount() {

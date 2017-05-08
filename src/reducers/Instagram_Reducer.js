@@ -12,7 +12,8 @@ const INITIAL_STATE = {
     media: null,
     loading: false,
     token: null,
-    tag: ''
+    tag: '',
+    error: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,7 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         case INSTAGRAM_FETCH_SUCCESS:
             return {...state, loading: false, media: action.payload};
         case INSTAGRAM_FETCH_FAILED:
-            return {INITIAL_STATE};
+            return {...state, loading: false, error: action.payload};
         case GET_TOKEN:
             return {...state, loading: true};
         case GET_TOKEN_SUCCESS:

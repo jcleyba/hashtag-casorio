@@ -12,7 +12,8 @@ class SlideshowComponent extends Component {
         super(props);
         this.state = {
             currentSlide: 0,
-            data: props.data
+            data: props.data || [],
+
         };
         this.slideNext = this.slideNext.bind(this);
     }
@@ -42,9 +43,9 @@ class SlideshowComponent extends Component {
                 self.setState({
                     currentSlide: 0
                 });
-                self.props.fetchData(this.props.tag);
+                self.props.fetchData(self.props.tag);
             }
-        }, 10000);
+        }, 7000);
 
     }
 
@@ -56,10 +57,23 @@ class SlideshowComponent extends Component {
                 return jsx.push(<SlideComponent isActive={isActive} key={item.id} media={item}/>);
             })
         }
+        if (this.state.data && this.state.data.length === 0 || this.props.error) {
+            return this.renderNoResults();
+        }
         if (this.props.loading) {
             return <SpinnerComponent/>
         }
+
         return jsx;
+    }
+
+    renderNoResults() {
+        return (
+            <div className="no-results">
+                <h2>No hay resultados</h2>
+                <div><a href="/logout">Cambiar Hashtag</a></div>
+            </div>
+        )
     }
 
     render() {
@@ -73,8 +87,8 @@ class SlideshowComponent extends Component {
 }
 
 const mapStateToProps = ({instagram}) => {
-    const {media, loading, tag}  = instagram;
-    return {media, loading, tag}
+    const {media, loading, tag, error}  = instagram;
+    return {media, loading, tag, error}
 };
 
 export default connect(mapStateToProps, {})(SlideshowComponent);
