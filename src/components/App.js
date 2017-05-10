@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {instagramFetch, inputChanged, tagSaved, fetchTag} from '../actions'
+import {instagramFetch, inputChanged, tagSaved, fetchTag, saveToken, getToken} from '../actions'
 import {connect} from 'react-redux';
 import  SlideshowComponent from './Slideshow'
 import styles from '../css/styles.css';
@@ -17,11 +17,17 @@ class App extends Component {
     }
 
     componentWillMount() {
-
+        var tokenUrl = window.location.href.split("=")[1];
+        if (tokenUrl) {
+            this.props.saveToken(tokenUrl)
+        }
+        else {
+            this.props.getToken();
+        }
     }
 
-    fetchData(tag) {
-        this.props.instagramFetch(tag);
+    fetchData(tag, token) {
+        this.props.instagramFetch(tag, token);
     };
 
     inputChanged(event) {
@@ -76,8 +82,8 @@ class App extends Component {
 }
 
 const mapStateToProps = ({instagram}) => {
-    const {media, tag} = instagram;
-    return {media, tag};
+    const {media, tag, tokenValid} = instagram;
+    return {media, tag, tokenValid};
 };
 
-export default connect(mapStateToProps, {instagramFetch, inputChanged, tagSaved, fetchTag})(App);
+export default connect(mapStateToProps, {instagramFetch, inputChanged, tagSaved, fetchTag, saveToken, getToken})(App);

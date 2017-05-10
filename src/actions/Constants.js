@@ -7,6 +7,7 @@ export const INSTAGRAM_FETCH_FAILED = 'instagram_fetch_failed';
 
 export const GET_TOKEN = 'get_token';
 export const GET_TOKEN_SUCCESS = 'get_token_success';
+export const TOKEN_HAS_EXPIRED = 'token_has_expired';
 
 export const INPUT_CHANGED = 'input_changed';
 export const TAG_SAVED = 'tag_saved';

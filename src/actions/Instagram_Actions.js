@@ -6,6 +6,7 @@ import {
     INSTAGRAM_FETCH,
     INSTAGRAM_FETCH_SUCCESS,
     INSTAGRAM_FETCH_FAILED,
+    TOKEN_HAS_EXPIRED
 } from './Constants'
 
 const ajaxFetch = (dispatch, tag, max_id, ret) => {
@@ -36,12 +37,56 @@ const ajaxFetch = (dispatch, tag, max_id, ret) => {
     });
 };
 
-export const instagramFetch = (tag) => {
-
+export const instagramFetch = (tag, token) => {
     return (dispatch) => {
         dispatch({type: INSTAGRAM_FETCH});
-        ajaxFetch(dispatch, tag, '', []);
+        //ajaxFetch(dispatch, tag, '', []);
+        const api = 'https://api.instagram.com/v1/tags/' + tag + '/media/recent?access_token=' + token;
+        instagramFetchFromAPI(dispatch, api, [])
     };
 
 };
+
+
+const instagramFetchFromAPI = (dispatch, url, ret) => {
+    var rett = ret;
+
+    var options = {
+        url: url,
+        type: "GET",
+        dataType: 'jsonp'
+    };
+
+    $.when($.ajax(options)).then(data => {
+        if (data.meta.code === 400) {
+            dispatch({type: TOKEN_HAS_EXPIRED})
+        }
+        else {
+            if (data.pagination.next_url) {
+                rett = rett.concat(data.data);
+                instagramFetchFromAPI(dispatch, data.pagination.next_url, rett);
+            }
+            else {
+                rett = rett.concat(data.data);
+                dispatch({type: INSTAGRAM_FETCH_SUCCESS, payload: rett})
+            }
+        }
+
+    }).catch(error => {
+        console.log(error);
+        dispatch({type: INSTAGRAM_FETCH_FAILED, payload: error.responseText});
+    });
+};
+
+export const removeInstaItem = (list, index) => {
+    console.log(list);
+    list.splice(index, 1);
+    console.log(list);
+    return {
+        type: INSTAGRAM_FETCH_SUCCESS,
+        payload: list
+    }
+};
+
+
 

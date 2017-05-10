@@ -6,14 +6,15 @@ import {
     INSTAGRAM_FETCH_SUCCESS,
     GET_TOKEN,
     GET_TOKEN_SUCCESS,
-    INSTAGRAM_FETCH_FAILED, INPUT_CHANGED, TAG_SAVED, TAG_FETCH_SUCCESS, TAG_FETCH_FAIL
+    INSTAGRAM_FETCH_FAILED, INPUT_CHANGED, TAG_SAVED, TAG_FETCH_SUCCESS, TAG_FETCH_FAIL, TOKEN_HAS_EXPIRED
 } from '../actions/Constants';
 const INITIAL_STATE = {
     media: null,
     loading: false,
     token: null,
     tag: '',
-    error: null
+    error: null,
+    tokenValid: true
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,6 +27,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, loading: false, error: action.payload};
         case GET_TOKEN:
             return {...state, loading: true};
+        case TOKEN_HAS_EXPIRED:
+            return {...state, loading: false, tokenValid: false};
         case GET_TOKEN_SUCCESS:
             return {...state, loading: false, token: action.payload};
         case INPUT_CHANGED:
