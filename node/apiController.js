@@ -34,7 +34,7 @@ module.exports = function (app) {
                     res.json({"responseCode": 1, "responseDesc": "Failed!"});
                 }
 
-                res.json(body.tag.media);
+                res.json(body.graphql.hashtag.edge_hashtag_to_media);
             });
         };
 

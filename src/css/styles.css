@@ -36,6 +36,7 @@ a {
 .single-slide .caption,
 .single-slide .pic {
     width: 50%;
+    max-height: 90vh;
 }
 
 .single-slide .caption {

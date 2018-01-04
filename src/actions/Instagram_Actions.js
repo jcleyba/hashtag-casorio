@@ -24,7 +24,7 @@ const ajaxFetch = (dispatch, tag, max_id, ret) => {
     };
     $.when($.ajax(options)).then(data => {
         if (data.page_info.has_next_page) {
-            retur = retur.concat(data.nodes);
+            retur = retur.concat(data.edges);
             ajaxFetch(dispatch, tag, data.page_info.end_cursor, retur);
         }
         else {

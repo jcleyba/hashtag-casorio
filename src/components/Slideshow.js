@@ -54,7 +54,7 @@ class SlideshowComponent extends Component {
         if (this.state.data) {
             this.state.data.map((item, index) => {
                 var isActive = this.state.currentSlide === index;
-                return jsx.push(<SlideComponent isActive={isActive} key={item.id} media={item}/>);
+                return jsx.push(<SlideComponent isActive={isActive} key={item.node.id} media={item.node}/>);
             })
         }
         if (this.state.data && this.state.data.length === 0 || this.props.error) {
